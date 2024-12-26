@@ -1,12 +1,12 @@
 
 # E-Commerce
 
-A simple e-commerce built with Tailwind CSS and Laravel.
+A simple School built with Tailwind CSS and Laravel.
 
 
 ## Github Repo
 
-https://github.com/Rajdev-ullash/e-commerce-task-laravel
+https://github.com/Tahsin411934/SB-school-management-version-2.git
 
 
 ## Features
@@ -26,12 +26,12 @@ These instructions will get you a copy of the project up and running on your loc
 Installing
 
 ```bash
-  git clone https://github.com/Rajdev-ullash/e-commerce-task-laravel.git
+  git clone https://github.com/Tahsin411934/SB-school-management-version-2.git
 ```
 Navigate into the project directory
 
 ```bash
-  cd e-commerce-task-laravel
+  cd SB-school-management-version-2
 ```
 Install the required dependencies
 
@@ -59,19 +59,6 @@ Admin login url: http://127.0.0.1:8000/admin/login
 ## Feedback
 
 If you have any feedback, please reach out to us at rajdevullash111@gmail.com
-
-
-# Hi, I'm Raj Dev Ullash! 👋
-I am a front-end developer. I primarily focus on writing clean, elegant, and efficient code.
-
-## 🚀 About Me
-🔭 I’m currently working on MERN and Laravel. 👯 I’m looking to collaborate on an open-source project. 💬 Ask me about anything related with code. ⚡ Fun fact I think I am funny
-
-
-## 🔗 Links
-[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://raj-dev-ullash.web.app/)
-
-[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/raj-dev-ullash-831512203/)
 
 
 
