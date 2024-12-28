@@ -21,9 +21,9 @@ class UsersController extends Controller
         if (!Auth::user()->can('user.view')) {
             abort(403, 'Sorry !! You are Unauthorized to view any admin !');
         }
-
+        $roles  = Role::all();
         $users = User::all();
-        return view('admin.pages.users.index', compact('users'));
+        return view('admin.pages.users.index', compact('users', 'roles'));
     }
 
     /**
