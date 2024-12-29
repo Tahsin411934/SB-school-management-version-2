@@ -19,7 +19,7 @@
         @if (session('success'))
         <div class="alert alert-success mt-4 a-dismissible" role="alert">
             {{ session('success') }}
-            <button type="button" class="close" -dismiss="alert" aria-label="Close">
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -54,8 +54,12 @@
                             </td>
 
                             <td>
-                                <a href="{{ URL::to('admin/edit-admissionFee/' . $class->id) }}"
-                                    class="btn btn-warning btn-sm">Edit</a>
+                                <!-- <a href="{{ URL::to('admin/edit-admissionFee/' . $class->id) }}"
+                                    class="btn btn-warning btn-sm">Edit</a> -->
+                                <button type="button" onclick="setFormAction({{ json_encode($class) }})"
+                                    class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
+                                    Edit
+                                </button>
                             </td>
                         </tr>
                         @endforeach
@@ -71,76 +75,98 @@
 
     </div>
 
+</div>
 
-
-
-
-
-    <!-- Modal Structure -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <!-- Added modal-lg for larger width -->
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Admission Fee</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <form id="createAdmissionFeeForm" action="{{ URL::to('admin/store-admissionFee') }}" method="POST">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="class_id">Select Class</label>
-                            <select class="form-control" id="class_id" name="class_id" required>
-                                <option value="" disabled selected>Select your class</option>
-                                @foreach ($studentClasses as $class)
-                                <option value="{{ $class->id }}"
-                                    {{ in_array($class->id, $classesWithAdmissionFees) ? 'disabled' : '' }}>
-                                    {{ $class->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div id="dynamic-field-container">
-                            <h4>Setup Admission Fee</h4>
-                            <div class="row mb-2 dynamic-field">
-                                <div class="col-md-4">
-                                    <input type="text" name="fees_name[]" class="form-control" placeholder="Fees Name"
-                                        required>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="number" name="fees_amount[]" class="form-control"
-                                        placeholder="Fees Amount" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="number" name="sibbling_discount[]" class="form-control"
-                                        placeholder="Sibbling Discount" required>
-                                </div>
+<!-- Create Admission Fee Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Admission Fee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createAdmissionFeeForm" action="{{ URL::to('admin/store-admissionFee') }}" method="POST">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label for="class_id">Select Class</label>
+                        <select class="form-control" id="class_id" name="class_id" required>
+                            <option value="" disabled selected>Select your class</option>
+                            @foreach ($studentClasses as $class)
+                            <option value="{{ $class->id }}"
+                                {{ in_array($class->id, $classesWithAdmissionFees) ? 'disabled' : '' }}>
+                                {{ $class->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div id="dynamic-field-container">
+                        <h4>Setup Admission Fee</h4>
+                        <div class="row mb-2 dynamic-field">
+                            <div class="col-md-4">
+                                <input type="text" name="fees_name[]" class="form-control" placeholder="Fees Name"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" name="fees_amount[]" class="form-control" placeholder="Fees Amount"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" name="sibbling_discount[]" class="form-control"
+                                    placeholder="Sibbling Discount" required>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-success mt-3" id="add-field">Add Field</button>
-                    </form>
-                </div>
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="createAdmissionFeeForm" class="btn btn-primary">Save changes</button>
-                </div>
+                    </div>
+                    <button type="button" class="btn btn-success mt-3" id="add-field">Add Field</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="createAdmissionFeeForm" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
-
 </div>
+
+<!-- Update Admission Fee Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Admission Fee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="user" id="updateForm" action="" method="POST">
+                    {{ csrf_field() }}
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="class_id1">Select Class</label>
+                        <input type="text" class="form-control" id="class_id1" name="class_id"
+                            placeholder="Enter your class ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Class Name</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                            placeholder="Enter your class name" required>
+                    </div>
+
+                    <h4>Setup Admission Fee</h4>
+                    <div id="dynamic-field-container-update"></div>
+                    <button type="button" class="btn btn-success mt-2" id="add-field-update">Add Fee</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="updateForm">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @stop
 
 @section('scripts')
-<!-- Page level plugins -->
-
-
-
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -154,7 +180,7 @@ $(document).ready(function() {
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
-                        <input type="number" name="sibbling_discount[]" class="form-control" placeholder="Sibbling Discount" required>
+                        <input type="number" name="sibbling_discount[]" class="form-control" placeholder="Sibling Discount" required>
                         <div class="input-group-append">
                             <button type="button" class="btn btn-danger remove-field">Remove</button>
                         </div>
@@ -171,6 +197,55 @@ $(document).ready(function() {
     $(document).on('click', '.remove-field', function() {
         $(this).closest('.dynamic-field').remove();
     });
+
+    // Add a new field for update modal
+    $('#add-field-update').click(function() {
+        $('#dynamic-field-container-update').append(fieldHTML);
+    });
+
+    // Remove a field for update modal
+    $(document).on('click', '.remove-field', function() {
+        $(this).closest('.dynamic-field').remove();
+    });
 });
+
+function setFormAction(classData) {
+    // Populate the 'name' and 'class_id' fields for update modal
+    document.getElementById('name').value = classData.name || '';
+    document.getElementById('class_id1').value = classData.id || '';
+
+    // Set the form action dynamically for update
+    const formAction = `update-admissionFee/${classData.id}`;
+    document.getElementById('updateForm').setAttribute('action', formAction);
+
+    // Populate the dynamic fields for admission fees
+    const container = document.getElementById('dynamic-field-container-update');
+    container.innerHTML = ''; // Clear existing fields
+
+    if (classData.admission_fees && classData.admission_fees.length > 0) {
+        classData.admission_fees.forEach(fee => {
+            const feeFieldHTML = `
+            <div class="row mb-2 dynamic-field">
+                <div class="col-md-4">
+                    <input type="text" name="fees_name[]" class="form-control" placeholder="Fees Name" value="${fee.fees_name}" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="fees_amount[]" class="form-control" placeholder="Fees Amount" value="${fee.fees_amount || 0}" required step="0.01">
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="number" name="sibbling_discount[]" class="form-control" placeholder="Sibling Discount" value="${fee.sibbling_discount || 0}" required step="0.01">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-danger remove-field">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.insertAdjacentHTML('beforeend', feeFieldHTML);
+        });
+    } else {
+        container.innerHTML = '<div class="text-center">No Fees Found</div>';
+    }
+}
 </script>
 @stop

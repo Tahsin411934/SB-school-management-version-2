@@ -52,7 +52,8 @@ class AdmissionFeeController extends Controller
         $studentClasses = StudentClass::all();
         $data = StudentClass::with('admissionFees')->get();
         $classesWithAdmissionFees = AdmissionFee::pluck('class_id')->toArray();
-        return view('admin.pages.admissionFee.all', compact('data', 'studentClasses', 'classesWithAdmissionFees'));
+        $classes = StudentClass::all();
+        return view('admin.pages.admissionFee.all', compact('data', 'studentClasses', 'classesWithAdmissionFees','classes'));
     }
     public function edit($id){
         // dd($id);
