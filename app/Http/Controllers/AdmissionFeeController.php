@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdmissionFeeController extends Controller
 {
-    //
+    
     //
     public function create(){
         if(!Auth::user()->hasPermissionTo('admissionFee.create')){
@@ -49,8 +49,10 @@ class AdmissionFeeController extends Controller
         if(!Auth::user()->hasPermissionTo('admissionFee.view')){
             abort(403, 'You are not allowed to view admissionFee');
         }
+        $studentClasses = StudentClass::all();
         $data = StudentClass::with('admissionFees')->get();
-        return view('admin.pages.admissionFee.all', compact('data'));
+        $classesWithAdmissionFees = AdmissionFee::pluck('class_id')->toArray();
+        return view('admin.pages.admissionFee.all', compact('data', 'studentClasses', 'classesWithAdmissionFees'));
     }
     public function edit($id){
         // dd($id);
