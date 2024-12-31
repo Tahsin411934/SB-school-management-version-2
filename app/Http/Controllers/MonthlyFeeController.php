@@ -14,9 +14,12 @@ class MonthlyFeeController extends Controller
         if(!Auth::user()->hasPermissionTo('monthlyFee.create')){
             abort(403, 'You are not allowed to create monthlyFee');
         }
+        $data = MonthlyFee::with('studentClass')->where('class_id', $id)->first();
+
+        $classes = StudentClass::all(); 
         $studentClasses = StudentClass::all();
         $classesWithAdmissionFees = MonthlyFee::pluck('class_id')->toArray();
-        return view('admin.pages.monthlyFee.create', compact('studentClasses','classesWithAdmissionFees'));
+        return view('admin.pages.monthlyFee.create', compact('studentClasses','classesWithAdmissionFees','data','classes'));
     }
 
     public function store(Request $request){
@@ -52,9 +55,11 @@ class MonthlyFeeController extends Controller
             abort(403, 'You are not allowed to view monthlyFee');
         }
         $data = StudentClass::with('monthlyFees')->get();
-
+        $classesWithAdmissionFees = MonthlyFee::pluck('class_id')->toArray();
+        $studentClasses = StudentClass::all();
+        $classes = StudentClass::all(); 
         // dd($data);
-        return view('admin.pages.monthlyFee.all', compact('data'));
+        return view('admin.pages.monthlyFee.all', compact('data','classes','studentClasses','classesWithAdmissionFees'));
     }
     public function edit($id){
         // dd($id);
@@ -68,22 +73,33 @@ class MonthlyFeeController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
+    { 
         if (!Auth::user()->hasPermissionTo('monthlyFee.edit')) {
             abort(403, 'You are not allowed to edit admission fee');
         }
 
-        $request->validate([
-            'class_id' => 'required|exists:student_classes,id',
-            'due_date' => 'required|date',
-            'due_fine' => 'required|numeric',
-            'fees_name' => 'required|array',
-            'fees_name.*' => 'required|string',
-            'fees_amount' => 'required|array',
-            'fees_amount.*' => 'required|numeric',
-            'sibbling_discount' => 'nullable|array',
-            'sibbling_discount.*' => 'nullable|numeric',
-        ]);
+
+        try {
+      
+            $validated =  $request->validate([
+                'class_id' => 'required|exists:student_classes,id',
+                'due_date' => 'required|date',
+                'due_fine' => 'required|numeric',
+                'fees_name' => 'required|array',
+                'fees_name.*' => 'required|string',
+                'fees_amount' => 'required|array',
+                'fees_amount.*' => 'required|numeric',
+                'sibbling_discount' => 'nullable|array',
+                'sibbling_discount.*' => 'nullable|numeric',
+            ]);
+    
+            
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            
+            dd($e->errors()); // This will show the validation error messages
+        }
+       
 
         // Update existing admission fees
         $admissionFees = MonthlyFee::where('class_id', $request->class_id)->get();
@@ -118,7 +134,9 @@ class MonthlyFeeController extends Controller
         if(!Auth::user()->hasPermissionTo('monthlyFee.delete')){
             abort(403, 'You are not allowed to delete class');
         }
-        MonthlyFee::find($id)->delete();
+        
+        $item=  MonthlyFee::find($id)->delete();
+        
         return redirect()->back()->with('msg', 'Class deleted successfully');
     }
 }

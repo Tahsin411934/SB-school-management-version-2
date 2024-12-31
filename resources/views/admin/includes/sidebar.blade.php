@@ -158,6 +158,10 @@
                         <a class="collapse-item {{ URL::current() == URL::to('/admin/getAllStudentShifting') ? 'active' : '' }}"
                             href="{{ URL::to('/admin/getAllStudentShifting') }}">Class Shifting</a>
                     @endif
+                    @if ($user->can('student.create'))
+                        <a class="collapse-item {{ URL::current() == URL::to('/admin/getStudentLedger') ? 'active' : '' }}"
+                            href="{{ URL::to('/admin/student-ledger') }}">Student Ledger</a>
+                    @endif
                 </div>
             </div>
         </li>

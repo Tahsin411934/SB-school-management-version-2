@@ -22,6 +22,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\StudentLedgerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin/login', [LoginController::class,'create']);
@@ -49,6 +50,7 @@ Route::middleware('admin')->group(function(){
     Route::get('/admin/create-studentClass', [StudentClassController::class, 'create']);
     Route::post('/admin/store-studentClass', [StudentClassController::class, 'store']);
     Route::get('/admin/getAllStudentsClass', [StudentClassController::class, 'getAllStudentsClass']);
+    Route::get('/admin/student-ledger', [StudentLedgerController::class, 'getStudentLedger'])->name('student.ledger');
     Route::get('/admin/edit-studentClass/{id}', [StudentClassController::class, 'edit']);
     Route::post('/admin/update-studentClass/{id}', [StudentClassController::class, 'update']);
     Route::get('/admin/delete-studentClass/{id}', [StudentClassController::class, 'delete']);

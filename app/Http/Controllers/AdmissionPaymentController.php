@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\AdmissionFee;
 use App\Models\AdmissionPayment;
 use App\Models\Student;
 use App\Models\StudentClass;
-use Illuminate\Http\Request;
+use App\Models\StudentLedger;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+
 class AdmissionPaymentController extends Controller
 {
     //
@@ -23,16 +24,15 @@ class AdmissionPaymentController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request inputs
         // Replace commas in the amount, discount, and total fields to make them numeric
         $request->merge([
             'amount' => str_replace(',', '', $request->amount),
-            'discount' => str_replace(',', '', $request->discount),
+            'discount' => str_replace(',', '', $request->discount ?? 0),  // Default to 0 if discount is null
             'total' => str_replace(',', '', $request->total),
         ]);
 
         // Validate the request inputs
-        $request->validate([
+        $data = $request->validate([
             'student_id' => 'required|exists:students,id',
             'payment_type' => 'required|string',
             'class_id' => 'required|exists:student_classes,id',
@@ -40,7 +40,6 @@ class AdmissionPaymentController extends Controller
             'discount' => 'nullable|numeric',
             'total' => 'required|numeric',
         ]);
-        
 
         // Calculate total and store the data in the database
         $admissionPayment = new AdmissionPayment();
@@ -48,22 +47,28 @@ class AdmissionPaymentController extends Controller
         $admissionPayment->payment_type = $request->payment_type;
         $admissionPayment->class_id = $request->class_id;
         $admissionPayment->amount = $request->amount;
-        $admissionPayment->discount = $request->discount ?? 0;
+        $admissionPayment->discount = $request->discount ?? 0;  // Assign a default value of 0 if null
         $admissionPayment->total = $request->total;
 
         // Save to the database
-        $admissionPayment->save();
-        // Save the admission payment to the database
         if ($admissionPayment->save()) {
             // Update the student's payment_status to true
             $student = Student::find($request->student_id);
+            $ledger = StudentLedger::where('StudentID', $request->student_id)->first();
+          
             if ($student) {
-                $student->payment_status = true; // Assuming 'payment_status' is a boolean field
-                $student->save(); // Save the updated student
+                $student->payment_status = true;  // Assuming 'payment_status' is a boolean field
+                $student->save();  // Save the updated student
+            }
+            if ($ledger) {
+                $ledger->Status = 'paid';  // Update the ledger status
+                $ledger->Received = $ledger->Received + $request->total;  // Add the payment total to the received amount
+                $ledger->save();
             }
 
             // Redirect to the student listing or another page with a success message
-            return redirect('admin/generate-invoice/' .$student->id);
+            return redirect('admin/generate-invoice/' . $student->id)
+                ->with('success', 'Admission payment saved successfully!');
         }
 
         // Handle failure in saving payment (optional)
@@ -87,6 +92,4 @@ class AdmissionPaymentController extends Controller
         // Stream the generated invoice PDF in the browser
         return $pdf->stream('invoice_' . $student->id . '.pdf', ['Attachment' => false]);
     }
-    
-    
 }

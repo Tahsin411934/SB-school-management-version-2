@@ -201,7 +201,7 @@
                         </div>
 
                         <input type="hidden" name="discount" id="hidden-discount">
-                        <input type="hidden" name="total" id="hidden-grand-total">
+                        <input type="hidden" name="total" id="hidden-grand-total" value="{{ number_format($totalAmountAfterDiscount, 2) }}">
                         <input name="submit" type="submit" value="Create" class="btn btn-primary btn-user btn-block">
                     </form>
 
