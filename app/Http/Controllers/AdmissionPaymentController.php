@@ -18,6 +18,7 @@ class AdmissionPaymentController extends Controller
         $student = Student::findOrFail($id);
         $classes = StudentClass::all();
         $data = AdmissionFee::with('studentClass')->where('class_id', $student->class_id)->first();
+        
         $is_sibling = $student->is_sibling;
         return view('admin.pages.admissionPayment.create', compact('student', 'classes', 'data', 'is_sibling'));
     }

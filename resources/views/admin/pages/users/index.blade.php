@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-<div class="main-content-inner container">
+<div class="main-content-inner container text-gray-900">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="margin-bottom: 0;">Manage Users</h3>
         <div>
@@ -18,12 +18,12 @@
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-4 text-blue-900 " style="">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="example" class="table table-bordered table-striped text-center">
+                        <table id="example" class="table table-bordered table-striped text-center text-gray-900">
                             <thead class="thead-light">
                                 <tr>
                                     <th width="5%">Sl</th>
@@ -35,13 +35,13 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                <tr>
+                                <tr class="text-gray-900">
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         @foreach ($user->roles as $role)
-                                        <span class="badge badge-info mr-1">{{ $role->name }}</span>
+                                        <span class="badge badge-info mr-1 text-gray-900">{{ $role->name }}</span>
                                         @endforeach
                                     </td>
                                     <td>
@@ -73,6 +73,7 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -111,10 +112,11 @@
                         <input type="password" class="form-control" id="password_confirmation"
                             name="password_confirmation" placeholder="Enter Password">
                     </div>
-                    
+
                     <div class="form-group w-100">
                         <label for="roles">Assign Roles</label>
-                        <select name="roles[]" id="roles" class="form-control select2 w-100" style="width: 460px;" multiple>
+                        <select name="roles[]" id="roles" class="form-control select2 w-100" style="width: 460px;"
+                            multiple>
                             @foreach ($roles as $role)
                             <option value="{{ $role->name }}">{{ $role->name }}</option>
                             @endforeach
@@ -164,13 +166,14 @@
                     </div>
                     <div class="form-group w-100 input-group input-group-lg">
                         <label for="editRoles">Assign Roles</label>
-                        <select name="roles[]" id="editRoles" class="form-control select2 w-100" style="width: 700px;" multiple>
+                        <select name="roles[]" id="editRoles" class="form-control select2 w-100" style="width: 700px;"
+                            multiple>
                             @foreach ($roles as $role)
                             <option value="{{ $role->name }}">{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
@@ -186,25 +189,25 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        // Initialize Select2
-        $(".select2").select2();
-        
-        // Populate Edit Modal with User Data
-        $('.edit-user-btn').on('click', function() {
-            var userId = $(this).data('id');
-            var userName = $(this).data('name');
-            var userEmail = $(this).data('email');
-            var userRoles = $(this).data('roles').split(',');
+$(document).ready(function() {
+    // Initialize Select2
+    $(".select2").select2();
 
-            $('#editUserId').val(userId);
-            $('#editName').val(userName);
-            $('#editEmail').val(userEmail);
+    // Populate Edit Modal with User Data
+    $('.edit-user-btn').on('click', function() {
+        var userId = $(this).data('id');
+        var userName = $(this).data('name');
+        var userEmail = $(this).data('email');
+        var userRoles = $(this).data('roles').split(',');
 
-            // Set selected roles
-            $('#editRoles').val(userRoles).trigger('change');
-            $('#editUserForm').attr('action', `/admin/update-user/${userId}`);
-        });
+        $('#editUserId').val(userId);
+        $('#editName').val(userName);
+        $('#editEmail').val(userEmail);
+
+        // Set selected roles
+        $('#editRoles').val(userRoles).trigger('change');
+        $('#editUserForm').attr('action', `/admin/update-user/${userId}`);
     });
+});
 </script>
 @stop

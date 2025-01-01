@@ -26,7 +26,6 @@
                                 <th>Reference</th>
                                 <th>Bill Amount</th>
                                 <th>Received</th>
-                                <th>Due</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -42,9 +41,7 @@
                                         <td>{{ $entry->Ref }}</td>
                                         <td>{{ $entry->BillAmount }}</td>
                                         <td>{{ $entry->Received }}</td>
-                                        <td>
-                                            {{ number_format($entry->BillAmount - $entry->Received, 2) }}
-                                        </td>
+                                        
                                         <td>
                                             <span class="badge {{ $entry->Status == 'due' ? 'badge-warning' : 'badge-success' }}">
                                                 {{ ucfirst($entry->Status) }}

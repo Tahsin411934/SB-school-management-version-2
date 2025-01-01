@@ -72,12 +72,16 @@ class MonthlyFeeStudentController extends Controller
 
 
         $students = DB::table('monthly_fee_students')
-            ->join('students', 'monthly_fee_students.student_id', '=', 'students.id')
-            ->where('monthly_fee_students.month_name', $month)
-            ->where('students.class_id', $classId)
-            ->select('students.*','monthly_fee_students.*') // Select all student fields or specific fields as needed
-            ->get();
-
+        ->join('students', 'monthly_fee_students.student_id', '=', 'students.id')
+        ->where('monthly_fee_students.month_name', $month)
+        ->where('students.class_id', $classId)
+        ->select(
+            'students.*', 
+            'monthly_fee_students.*', 
+            'monthly_fee_students.student_id as mfs_student_id' // Alias for student_id
+        )
+        ->get();
+    
 
         
 

@@ -135,8 +135,8 @@ class MonthlyFeeController extends Controller
             abort(403, 'You are not allowed to delete class');
         }
         
-        $item=  MonthlyFee::find($id)->delete();
-        
+        // $item=  MonthlyFee::find($id)->delete();
+        MonthlyFee::where('class_id', $id)->delete();
         return redirect()->back()->with('msg', 'Class deleted successfully');
     }
 }

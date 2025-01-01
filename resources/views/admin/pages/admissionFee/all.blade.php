@@ -1,5 +1,7 @@
 @extends('admin.layouts.admin')
 @section('links')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @stop
 @section('content')
 <div class="container-fluid">
@@ -27,7 +29,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table id="example" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table id="example" class="table table-bordered"  width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -60,6 +62,34 @@
                                     class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
                                     Edit
                                 </button>
+                                <a data-toggle="modal" data-target="#exampleModal{{ $class->id }}" href=""
+                                    class="btn btn-danger ">Reset</a>
+                                <div class="modal fade" id="exampleModal{{ $class->id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete
+                                                    Confirmation
+                                                </h1>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to Reset <b>{{ $class->name }}</b> and
+                                                its associated fees?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <a href="{{ URL::to('admin/delete-admissionFee/' . $class->id) }}"
+                                                    class="btn btn-danger">Reset</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
@@ -140,7 +170,7 @@
                 <form class="user" id="updateForm" action="" method="POST">
                     {{ csrf_field() }}
                     @method('PUT')
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="class_id1">Select Class</label>
                         <input type="text" class="form-control" id="class_id1" name="class_id"
                             placeholder="Enter your class ID" required>
@@ -167,7 +197,7 @@
 @stop
 
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
     let fieldHTML = `

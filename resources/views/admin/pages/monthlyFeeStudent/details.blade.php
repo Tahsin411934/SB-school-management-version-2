@@ -35,10 +35,10 @@
                                         <td>{{ $student->class_id }}</td>
                                         <td>
                                             @if ($student->status === '1')
-                                                <a href="{{ URL::to('admin/student-monthly-invoice-payment/' . $student->id . '/' . $student->month_name) }}"
+                                                <a href="{{ URL::to('admin/student-monthly-invoice-payment/' . $student->student_id . '/' . $student->month_name) }}"
                                                     class="btn btn-primary btn-sm">Generate Invoice</a>
                                             @else
-                                                <a href="{{ URL::to('admin/student-monthly-payment/' . $student->id) }}"
+                                                <a href="{{ URL::to('admin/student-monthly-payment/' . $student->student_id) }}"
                                                     class="btn btn-info btn-sm">Pay</a>
                                             @endif
                                         </td>

@@ -1,6 +1,6 @@
 @extends('admin.layouts.single')
 @section('single')
-    <div class="card-body p-0">
+    <div class="card-body p-0 ">
         <!-- Nested Row within Card Body -->
         <div class="row">
             <div class="col-lg-12">

@@ -73,7 +73,7 @@ class StudentController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // Handle image upload
+        
         // Handle image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -94,7 +94,7 @@ class StudentController extends Controller
         })->implode(", ");
 
 
-        StudentLedger::create([
+      $check =   StudentLedger::create([
             'StudentID' => $obj->id,
             'TDate' => now(),
             'Head' => 'Admission Fee',
@@ -104,7 +104,7 @@ class StudentController extends Controller
             'Received' => 0.0,
             'Status' => 'due',
         ]);
-
+        
         return redirect('/admin/student-profile/' . $obj->id);
     }
 

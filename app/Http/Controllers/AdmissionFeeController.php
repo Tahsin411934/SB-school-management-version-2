@@ -119,7 +119,8 @@ class AdmissionFeeController extends Controller
         if(!Auth::user()->hasPermissionTo('studentClass.delete')){
             abort(403, 'You are not allowed to delete class');
         }
-        StudentClass::find($id)->delete();
+        AdmissionFee::where('class_id', $id)->delete();
+        // StudentClass::find($id)->delete();
         return redirect()->back()->with('msg', 'Class deleted successfully');
     }
 }

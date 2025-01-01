@@ -42,10 +42,10 @@ class TaskController extends Controller
         $created_by_id = Auth::user()->id;
         $name = Auth::user()->name;
         $tasks = Task::where('created_by_id', $created_by_id)->get();
-
+        $users = User::all();
         // dd($tasks);
 
-        return view('admin.pages.task.getYourTask', compact('tasks','name'));
+        return view('admin.pages.task.getYourTask', compact('tasks','name','users'));
     }
     public function edit($id)
     {

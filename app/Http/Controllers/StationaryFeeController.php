@@ -49,7 +49,10 @@ class StationaryFeeController extends Controller
             abort(403, 'You are not allowed to view stationaryFee');
         }
         $data = StudentClass::with('stationaryFees')->get();
-        return view('admin.pages.stationaryFee.all', compact('data'));
+        
+        $studentClasses = StudentClass::all();
+        $classesWithAdmissionFees = EventFee::pluck('class_id')->toArray();
+        return view('admin.pages.stationaryFee.all', compact('data','studentClasses','classesWithAdmissionFees'));
     }
     public function edit($id){
         // dd($id);
@@ -115,7 +118,8 @@ class StationaryFeeController extends Controller
         if(!Auth::user()->hasPermissionTo('stationaryFee.delete')){
             abort(403, 'You are not allowed to delete class');
         }
-        StudentClass::find($id)->delete();
-        return redirect()->back()->with('msg', 'Class deleted successfully');
+        StationaryFee::where('class_id', $id)->delete();
+      
+        return redirect()->back()->with('msg', ' deleted successfully');
     }
 }

@@ -7,7 +7,7 @@
             @if (session('success'))
                 <div class="alert alert-success mt-4 a-dismissible" role="alert">
                     {{ session('success') }}
-                    <button type="button" class="close" -dismiss="alert" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -18,7 +18,7 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Student Admission Payment</h1>
                     </div>
-                    <form class="user" action="{{ URL::to('admin/store-admission-payment') }}" method="POST">
+                    <form class="user" action="{{ URL::to('admin/store-admission-payment') }}" method="POST" onsubmit="return validateForm()">
                         {{ csrf_field() }}
                         <h3>Student Information</h3>
                         <br />
@@ -187,12 +187,8 @@
                                         <div class="form-group">
                                             <label for="discount">Additional Discount (%)</label>
                                             <input type="number" id="discount" name="discount" class="form-control"
-                                                value="0" step="0.01" min="0">
+                                                step="0.01" min="0" oninput="calculateTotal()">
                                         </div>
-                                        <button type="button" class="btn btn-primary" onclick="calculateTotal()">Apply
-                                            Discount</button>
-                                        <button type="button" class="btn btn-secondary" onclick="resetDiscount()">Reset
-                                            Discount</button>
                                     @else
                                         <div class="text-center">No Fees Found</div>
                                     @endif
@@ -201,19 +197,17 @@
                         </div>
 
                         <input type="hidden" name="discount" id="hidden-discount">
-                        <input type="hidden" name="total" id="hidden-grand-total" value="{{ number_format($totalAmountAfterDiscount, 2) }}">
+                        <input type="hidden" name="total" id="hidden-grand-total">
                         <input name="submit" type="submit" value="Create" class="btn btn-primary btn-user btn-block">
                     </form>
-
-
-
-
                 </div>
             </div>
         </div>
     </div>
 @stop
+
 <script>
+    
     function calculateTotal() {
         const discountInput = document.getElementById('discount');
         const discountPercentage = parseFloat(discountInput.value) || 0;
@@ -241,17 +235,17 @@
         document.getElementById('additional-discount').textContent = totalAdditionalDiscount.toFixed(2);
         document.getElementById('grand-total').textContent = totalAmountAfterDiscount.toFixed(2);
 
-
         // Update hidden inputs
         document.getElementById('hidden-discount').value = totalAdditionalDiscount.toFixed(2);
         document.getElementById('hidden-grand-total').value = totalAmountAfterDiscount.toFixed(2);
     }
 
-    function resetDiscount() {
-        // Reset the discount input value to 0
-        document.getElementById('discount').value = 0;
-
-        // Recalculate totals after resetting the discount
-        calculateTotal();
+    function validateForm() {
+        const discount = parseFloat(document.getElementById('discount').value);
+        if (discount === 0) {
+            // Ensure hidden discount is set to 0 when it's 0% discount
+            document.getElementById('hidden-discount').value = 0;
+        }
+        return true;
     }
 </script>
