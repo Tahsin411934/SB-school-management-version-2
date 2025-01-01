@@ -354,6 +354,7 @@ class StudentController extends Controller
             // Perform the promotion logic
             foreach ($studentIds as $studentId) {
                 $student = Student::find($studentId);
+               
                 if ($student) {
                     // Example promotion logic: increment the student's class
                     $student->class_id += 1;

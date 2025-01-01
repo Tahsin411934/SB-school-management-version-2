@@ -14,7 +14,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Student List</h6>
-                <a href="{{ URL::to('/admin/create-student') }}" class="m-0 font-weight-bold text-primary">Create New
+                <a href="{{ URL::to('/admin/create-student') }}" class="m-0 btn btn-primary font-weight-bold text-white">Create New
                     Student</a>
             </div>
             @if (session('success'))
@@ -28,7 +28,7 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="example" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -123,9 +123,5 @@
 
 @section('scripts')
     <!-- Page level plugins -->
-    <script src="{{ asset('public/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('public/admin/js/demo/datatables-demo.js') }}"></script>
+   
 @stop
