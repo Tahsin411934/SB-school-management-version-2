@@ -40,12 +40,12 @@
                             <td>{{ $c->name }}</td>
                             <td>
                                 <!-- Edit Button -->
-                                <button class="btn btn-primary btn-sm" onclick="setFormAction({{ json_encode($c) }})"
+                                <button class="btn btn-primary " onclick="setFormAction({{ json_encode($c) }})"
                                     data-toggle="modal" data-target="#updateModal">
-                                    Edit (Modal)
+                                    Edit 
                                 </button>
                                 <a data-toggle="modal" data-target="#deleteModal{{ $c->id }}" href="#"
-                                    class="btn btn-danger btn-sm">Delete</a>
+                                    class="btn btn-danger ">Delete</a>
 
                                 <!-- Delete Modal -->
                                 <div class="modal fade" id="deleteModal{{ $c->id }}" tabindex="-1"
