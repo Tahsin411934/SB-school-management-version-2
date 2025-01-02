@@ -36,6 +36,13 @@ class StudentClassController extends Controller
         $data = StudentClass::all();
         return view('admin.pages.class.all', compact('data'));
     }
+    public function getAllClasses (){
+        if(!Auth::user()->hasPermissionTo('studentClass.view')){
+            abort(403, 'You are not allowed to view class');
+        }
+        $Classes = StudentClass::all();
+        return view('admin.pages.class.classes', compact('Classes'));
+    }
     public function edit($id){
         if(!Auth::user()->hasPermissionTo('studentClass.edit')){
             abort(403, 'You are not allowed to edit class');

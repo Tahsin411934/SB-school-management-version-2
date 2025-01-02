@@ -122,6 +122,18 @@ class StudentController extends Controller
         return view('admin.pages.student.all', compact('students'));
     }
 
+    public function getAllAdmittedStudents($class_id)
+    {
+        $students = Student::with('StudentClass')
+            ->where('class_id', $class_id)
+            ->where('payment_status', 1)
+            ->get();
+
+           
+        return view('admin.pages.student.students', compact('students'));
+    }
+    
+
    
     public function edit($id)
     {

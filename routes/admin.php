@@ -73,7 +73,9 @@ Route::middleware('admin')->group(function(){
     //student
     Route::get('/admin/create-student', [StudentController::class, 'create']);
     Route::post('/admin/store-student', [StudentController::class, 'store']);
+    Route::get('/admin/getClasses', [StudentClassController::class, 'getAllClasses']);
     Route::get('/admin/getAllStudents', [StudentController::class, 'getAllStudents']);
+    Route::get('/admin/getAdmitedStudents/{class_id}', [StudentController::class, 'getAllAdmittedStudents'])->name('student.classWise');
     Route::get('/admin/edit-student/{id}', [StudentController::class, 'edit']);
     Route::put('/admin/update-student/{id}', [StudentController::class, 'update']);
     Route::get('/admin/student-profile/{id}', [StudentController::class, 'show']);

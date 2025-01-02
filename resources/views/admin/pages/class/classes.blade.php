@@ -1,15 +1,11 @@
 @extends('admin.layouts.admin')
+
 @section('links')
-    <link href="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+<link href="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
+<div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary"> Student List</h6>
                 @if (session('success'))
@@ -31,12 +27,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($monthlyFeeStudents->isNotEmpty())
-                                @foreach ($monthlyFeeStudents as $fee)
+                            @if ($Classes->isNotEmpty())
+                                @foreach ($Classes as $Class)
                                     <tr>
-                                        <td>{{ $fee->class_name }}</td>
+                                        <td>{{ $Class->name }}</td>
                                         <td>
-                                            <a href="{{ route('student.details', ['class' => $fee->class_id]) }}">
+                                            <a href="{{ route('student.classWise', ['class_id' => $Class->id]) }}">
                                                 Details
                                             </a>
                                         </td>
@@ -53,14 +49,4 @@
             </div>
 
         </div>
-
-    </div>
-@stop
-@section('scripts')
-    <!-- Page level plugins -->
-    <script src="{{ asset('public/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('public/admin/js/demo/datatables-demo.js') }}"></script>
 @stop

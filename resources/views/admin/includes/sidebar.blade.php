@@ -148,8 +148,12 @@ $user = Auth::user();
             <div class="bg-white py-2 collapse-inner rounded">
                 @if ($user->can('student.view'))
                 <a class="collapse-item {{ in_array(URL::current(), [URL::to('/admin/getAllStudents'), URL::to('/admin/edit-student')]) ? 'active' : '' }}"
-                    href="{{ URL::to('/admin/getAllStudents') }}">Student list</a>
+                    href="{{ URL::to('/admin/getAllStudents') }}">All Student list</a>
                 @endif
+               
+                <a class="collapse-item {{ in_array(URL::current(), [URL::to('/admin/getAllStudents'), URL::to('/admin/edit-student')]) ? 'active' : '' }}"
+                    href="{{ URL::to('/admin/getClasses') }}">Admitted Student list</a>
+                
                 @if ($user->can('student.create'))
                 <a class="collapse-item {{ URL::current() == URL::to('/admin/getAllStudentPromotion') ? 'active' : '' }}"
                     href="{{ URL::to('/admin/getAllStudentPromotion') }}">Promotion</a>
